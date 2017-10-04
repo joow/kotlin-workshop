@@ -27,6 +27,16 @@ class: center, middle
 
 Technozaure Bordeaux - 6 octobre 2017
 
+???
+Bonjour !
+
+Aujourd'hui je vais vous parler du langage de programmation Kotlin.
+
+Pour commencer qui a déjà entendu parler de ce langage ?
+Qui en a déjà écrit ?
+Qui a déjà été payé pour en écrire :D ?
+Ok, tu peux sortir et revenir dans une heure alors ;-)
+
 ---
 
 # Agenda
@@ -44,11 +54,24 @@ Technozaure Bordeaux - 6 octobre 2017
 11. Fun, Fun, Fun
 12. Conclusion
 
+???
+
+Le format de la conférence est plutôt un format atelier.
+Je vais commencer par faire une présentation rapide du langage et nous verrons ensemble quelques fonctionnalités intéressantes proposées. J'ai volontairement limité ce nombre sinon la présentation aurait duré une heure et vous auriez eu quelques minutes seulement pour manipuler :p
+
+Un disclaimer avant d'attaquer : j'adore Kotlin, j'aime aussi Scala :D
+
 ---
 
 # A brief history
 
 ![Kotlin island](images/kotlin-island.jpg)
+
+???
+
+Ah mince une photo de mes dernières vacances s'est glissée dans la présentation !
+
+Il s'agit de l'île de Kotlin, située à une trentaine de kilomètres de Saint-Petersbourg
 
 ---
 
@@ -62,11 +85,27 @@ Technozaure Bordeaux - 6 octobre 2017
 
 * Endorsed by Google in 2017
 
+
+???
+
+Le développement de Kotlin a commencé en 2010 au sein de Jetbrains, qui possède des locaux à Saint-Petersbourg, d'où la photo précédente. La boucle est bouclée.
+
+Il a été officiellement annoncé en 2011 au JVM Language Summit.
+De nombreuses versions milestone se sont succédées et finalement la version 1.0 a été livrée le 15 février 2016. Heureusement qu'ils ont attendu un jour sinon j'aurais dû annuler le restaurant de la Saint-Valentin :p
+
+En mai 2017 Google a annoncé le support officiel du langage pour le développement d'applications Android.
+
 ---
 
 # Why ?
 
 <img src="images/website.png" alt="Kotlin website" width="800" height="500">
+
+???
+
+Le site officiel de Kotlin, RAS :)
+Ah si, les cibles, Android, JavaScript, bientôt natif.
+Et pour les amateurs, le site est fait en React, Bruno ;-)
 
 ---
 
@@ -78,11 +117,32 @@ Technozaure Bordeaux - 6 octobre 2017
 
 * What Java should have been
 
+???
+
+À l'origine développé en partie pour un usage interne avec les contraintes suivantes :
+
+  - interopérabilité complète avec du code Java (grosse base de code en Java en interne)
+  - compilation aussi rapide que Java (entraîne des arbitrages sur le système de types)
+  - plus "safe" que Java
+  - plus concis que Java (bon ok celle-là elle est facile)
+  - plus simple que Scala
+
+On peut résumer Kotlin comme "Java meet Scala" ou "Java++". Les mauvaises langues diront même qu'il est le langage que nous méritons, mais pas celui dont nous avons besoin ou qu'il est ce que Java aurait dû être.
+
 ---
+
+background-image: url(images/object.jpg)
 
 # Object
 
-<img src="images/object.jpg" alt="Everything is an object" width="750" height="500">
+???
+
+Contrairement à Java pas de type primitif, yeah :).
+Le compilateur est assez intelligent pour gérer ça comme un grand ;-)
+
+Tout en haut nous avons la classe `Any` dont tout type est un sous-type. Cette classe n'a AUCUN membre (contrairement à java.lang.Object)
+Tout en bas nous avons la classe `Nothing`, qui indique l'absence de valeur. Tout type est un super-type de `Nothing`.
+Après nous retrouvons les types classiques String, Int, Double, Boolean, Array, Unit(void) ...
 
 ---
 
@@ -104,6 +164,17 @@ fun main(args: Array<String>) {
 }
 ```
 
+???
+
+Kotlin propose deux mots-clé pour définir des variables :
+
+  - `val` (value) pour des références immuables.
+  - `var` (variable) pour des références muables.
+
+On peut rapprocher cette notion de JavaScript (const/let) ou Scala (val/var/def)
+
+**Attention** une référence immuable vers une structure muable ne rend pas la structure immuable.
+
 ---
 
 # Type inference
@@ -120,11 +191,21 @@ Rule of thumb 👍
 
 Use type in `fun` declaration, not necessarily in variable declaration.
 
+???
+
+Kotlin est capable d'inférer les variables, ainsi que les fonctions expressions.
+Afin de garder un temps de compilation acceptable, les fonctions blocks ne sont elles pas inférées (oui `scalac` c'est toi que je regarde).
+
 ---
+
+background-image: url(images/null.jpg)
 
 # To be null or not to be null ?
 
-<img src="images/null.jpg" alt="Billion dollar mistake" width="800" height="400">
+???
+
+La citation par excellence :
+> I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language (ALGOL W). My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn't resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years.
 
 ---
 
@@ -139,6 +220,18 @@ println(s2!!.length)   // 😈
 if (s2 != null) println(s3.length) // OK, smart cast as String
 if (s2 != null &amp;&amp; s2.length > 0) println("non-empty string") // OK too
 ```
+
+???
+
+Par défaut les types dans Kotlin ne sont pas nullables :-).
+Il faut explicitement indiquer le type comme nullable en ajoutant un `?` au nom du type (String?).
+À ce propos tous les types manipulés par le biais de code Java sont forcément nullables.
+
+Kotlin offre plusieurs facilités pour manipuler les types nullables :
+
+  - smart cast : une fois le test de nullité fait, le compilateur considère la valeur comme non nulle.
+  - l'opérateur `?` qui renvoie la valeur nulle si la variable manipulée est nulle. Cet opérateur peut être chaîné.
+  - ...
 
 ---
 
@@ -157,6 +250,10 @@ fun gimme(): Any =
     false -> 1
   }
 ```
+
+???
+
+De la même manière les smart type checks permettent de valider un objet comme d'un certain type une fois le test fait.
 
 ---
 
@@ -185,6 +282,12 @@ val b = when (ThreadLocalRandom.current().nextBoolean()) {
 }
 ```
 
+???
+
+Il n'y a pas d'opérateur `switch` (oooohhh). Mais rassurez-vous, il y a l'opérateur `when`, bien plus puissant (aaaahhhh).
+On peut l'utiliser comme un `switch` mais il s'apparente plus à une opération de pattern matching.
+À noter qu'il s'agit d'une expression, elle peut donc être utilisée pour une fonction expression.
+
 ---
 
 # DTO
@@ -211,6 +314,22 @@ public class User {
 ```kotlin
 data class User(val login, val password)
 ```
+
+???
+
+Le slide se passe de commentaires non ?
+
+Pas besoin d'utiliser d'outils qui génère du code à la compilation et qui nécessite un support de l'IDE.
+Ici tout est supporté par le langage.
+
+Le simple fait de rajouter le mot `data` nous offre :
+
+  - les accesseurs
+  - les mutateurs pour les propriétés mutables
+  - les méthodes `toString`, `equals`, `code`
+  - des méthodes de copie des objets, éventuellement en modifiant certaines propriétés.
+
+
 ---
 
 # Wow more such very goodies
@@ -239,6 +358,18 @@ fun randomPair(): Pair<Int, Int> {
 ```kotlin
 typealias Users = List&lt;User>
 ```
+
+???
+
+J'ai fait à peu près le tour des grosses fonctionnalités que je voulais vous présenter mais il en reste plein d'autres :-)
+Nous allons finir par faire un tour rapide de quelques fonctionnalités très agréables.
+
+Les fonctions d'extension, ou comment vous pouvez enfin rajouter une méthode au type `String`. Oui oui, vous avez bien entendu :-)
+
+La destructuration d'objets, bien connus des amoureux du JavaScript si il y en a ici ;-)
+Au passage on peut remarquer aussi l'existence d'un type Pair, en standard dans la librairie. Il existe aussi un type `Triple`. Ils se sont arrêtés là, contrairement à d'autres. En effet à partir de quatre valeurs renvoyées il faudrait peut-être réfléchir un peu plus à notre domaine.
+
+Pour finir sur cette slide les alias de type, plutôt pratique pour rendre plus expressif notre code.
 
 ---
 
@@ -273,6 +404,15 @@ infix fun Int.inc(n: Int) = this + n
 println(10 inc 2)
 ```
 
+???
+
+On continue avec :
+
+  - les ranges et les opérations `..`, `downTo`, `step` qui permettent de facilement itérer sur une liste de valeurs finies
+  - les safe calls pour les types nullables (déjà vu)
+  - l'opérateur Elvis, qui permet de renvoyer une valeur à la place de `null` et ainsi sortir du monde dangereux des types nullables.
+  - les fonctions `infix`
+
 ---
 
 # Wow more such very goodies
@@ -303,6 +443,17 @@ public class Interop {
 }
 ```
 
+???
+
+Enfin pour finir beaucoup de sucre et un peu d'interopérabilité :
+
+  - on peut définir des valeurs par défaut pour les arguments des fonctions (clin d'oeil aux développeurs JS).
+    Cela évite les méthodes surchargées (clin d'oeil aux développeurs Java)
+  - on peut appeler une fonction en changeant l'ordre des paramètres si on les nommes, cela est surtout intéressant combiné avec le point précédent.
+
+Concernant l'interoperabilité on peut voir un exemple, notre classe sera nommée &lt;ClasseKT, il est possible de changer ce comportement en utilisant l'annotation `@JvmName("name")`.
+On voit aussi que l'on peut demander au compilateur de générer les méthodes surchargées si notre fonction fournit des valeurs par défaut pour certains arguments.
+
 ---
 
 # Fun, Fun, Fun
@@ -311,10 +462,22 @@ Go, go, go workshop !
 
 **TODO** ajouter l'url du workshop sur Tech.io
 
+???
+
+C'est à vous maintenant :-)
+
+J'ai profité de l'occasion pour tenter de faire l'atelier sur Tech.io. Vous connaissez ?
+Je me suis malheureusement heurté à certaines difficultés, on verra ce que cela donne :-)
+Ne reproduisez pas cela chez vous :p
+
 ---
 class: center, middle
 
 # Conclusion
+
+???
+
+Kotlin, jetez-vous !
 
 ---
 
