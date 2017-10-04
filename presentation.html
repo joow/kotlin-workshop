@@ -451,7 +451,7 @@ Enfin pour finir beaucoup de sucre et un peu d'interopérabilité :
     Cela évite les méthodes surchargées (clin d'oeil aux développeurs Java)
   - on peut appeler une fonction en changeant l'ordre des paramètres si on les nommes, cela est surtout intéressant combiné avec le point précédent.
 
-Concernant l'interoperabilité on peut voir un exemple, notre classe sera nommée &lt;ClasseKT, il est possible de changer ce comportement en utilisant l'annotation `@JvmName("name")`.
+Concernant l'interoperabilité on peut voir un exemple, notre classe sera nommée &lt;ClasseKT, il est possible de changer ce comportement en utilisant l'annotation `@JvmName("name")` ou @file:JvmName("name").
 On voit aussi que l'on peut demander au compilateur de générer les méthodes surchargées si notre fonction fournit des valeurs par défaut pour certains arguments.
 
 ---
