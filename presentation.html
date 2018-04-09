@@ -25,8 +25,6 @@ class: center, middle
 
 ![Kotlin logo](images/kotlin.png)
 
-Technozaure Bordeaux - 6 octobre 2017
-
 ???
 Bonjour !
 
@@ -99,7 +97,7 @@ En mai 2017 Google a annoncé le support officiel du langage pour le développem
 
 # Why ?
 
-<img src="images/website.png" alt="Kotlin website" width="800" height="500">
+<img src="images/website.png" alt="Kotlin website" width="800" height="490">
 
 ???
 
@@ -150,23 +148,23 @@ Après nous retrouvons les types classiques String, Int, Double, Boolean, Array,
 
 ```kotlin
 fun main(args: Array<String>) {
-  val s: String = "Hello, Kotlin"
+* val s: String = "Hello, Kotlin"
   s = "Farewell, Java" // compile error
   println(s)
 
-  var n: Int = 1
+* var n: Int = 1
   n += 1
   println(n) // 2
 
-  val arr: Array<Int> = Array(5) { it }
-  arr[1] = 0
+* val arr: Array<Int> = Array(5) { it }
+* arr[1] = 0
   arr.forEach { print("$it ") } // 0 0 2 3 4
 }
 ```
 
 ???
 
-Kotlin propose deux mots-clé pour définir des variables :
+Kotlin propose deux mots-clés pour définir des variables :
 
   - `val` (value) pour des références immuables.
   - `var` (variable) pour des références muables.
@@ -334,20 +332,37 @@ Le simple fait de rajouter le mot `data` nous offre :
 
 ---
 
+background-image: url(images/sugar.gif)
+
 # Wow more such very goodies
 
-#### Extensions function
+???
+
+J'ai fait à peu près le tour des grosses fonctionnalités que je voulais vous présenter mais il en reste plein d'autres :-)
+Nous allons finir par faire un tour rapide de quelques fonctionnalités très agréables.
+
+---
+
+# Extensions function
 
 ```kotlin
 fun Int.isEven() = this % 2 == 0
+
 println(1.isEven())
 ```
 
-#### Destructuration
+???
+
+Les fonctions d'extension, ou comment vous pouvez enfin rajouter une méthode au type `String`. Oui oui, vous avez bien entendu 😀
+
+---
+
+# Destructuration
 
 ```kotlin
-val (x, y) = randomPair()
+*val (x, y) = randomPair()
 println("$x - $y")
+
 fun randomPair(): Pair<Int, Int> {
   fun nextRandomInt() = ThreadLocalRandom.current().nextInt() // nested function
   
@@ -355,86 +370,104 @@ fun randomPair(): Pair<Int, Int> {
 }
 ```
 
-#### Type alias
+???
+
+La destructuration d'objets, bien connus des amoureux du JavaScript si il y en a ici ;-)
+Au passage on peut remarquer aussi l'existence d'un type Pair, en standard dans la librairie. Il existe aussi un type `Triple`. Ils se sont arrêtés là, contrairement à d'autres. En effet à partir de quatre valeurs renvoyées il faudrait peut-être réfléchir un peu plus à notre domaine.
+On peut également voir qu'il est possible d'avoir des fonctions imbriquées et d'accéder aux variables de la fonction imbriquante.
+
+---
+
+# Type alias
 
 ```kotlin
-typealias Users = List&lt;User>
+*typealias Users = List&lt;User>
+
+val users: Users = emptyList()
 ```
 
 ???
 
-J'ai fait à peu près le tour des grosses fonctionnalités que je voulais vous présenter mais il en reste plein d'autres :-)
-Nous allons finir par faire un tour rapide de quelques fonctionnalités très agréables.
-
-Les fonctions d'extension, ou comment vous pouvez enfin rajouter une méthode au type `String`. Oui oui, vous avez bien entendu :-)
-
-La destructuration d'objets, bien connus des amoureux du JavaScript si il y en a ici ;-)
-Au passage on peut remarquer aussi l'existence d'un type Pair, en standard dans la librairie. Il existe aussi un type `Triple`. Ils se sont arrêtés là, contrairement à d'autres. En effet à partir de quatre valeurs renvoyées il faudrait peut-être réfléchir un peu plus à notre domaine.
-
 Pour finir sur cette slide les alias de type, plutôt pratique pour rendre plus expressif notre code.
+Attention à ne pas en abuser ceci dit, il arrive souvent que l'on souhaite rapidement ajouter du comportement à notre type.
 
 ---
 
-# Wow more such very goodies
-
-#### Ranges
+# Ranges
 
 ```kotlin
 val countdown = 10 downTo 0
+
 for (n in countdown) println(n)
 ```
 
-#### Safe calls
+???
+
+Les ranges et les opérations `..`, `downTo`, `step` qui permettent de facilement itérer sur une liste de valeurs finies
+
+---
+
+# Safe calls
 
 ```kotlin
-val s: String? = string()
-val length: Int? = s?.length // length or null
-println(user?.login?.length) // can be chained
+val string: String? = string()    // string can be nul
+
+*val length: Int? = s?.length    // length or null
+*println(user?.login?.length)    // can be chained
 ```
 
-#### Elvis operator
+???
+
+Les safe calls pour les types nullables (déjà vu)
+
+# Elvis operator
 
 ```kotlin
 val length: Int = s?.length ?: 0
 println(user?.login?.length ?: throw NullPointerException())
 ```
 
-#### Infix functions
-
-```kotlin
-infix fun Int.inc(n: Int) = this + n
-println(10 inc 2)
-```
-
 ???
 
-On continue avec :
-
-  - les ranges et les opérations `..`, `downTo`, `step` qui permettent de facilement itérer sur une liste de valeurs finies
-  - les safe calls pour les types nullables (déjà vu)
-  - l'opérateur Elvis, qui permet de renvoyer une valeur à la place de `null` et ainsi sortir du monde dangereux des types nullables.
-  - les fonctions `infix`
+L'opérateur Elvis, qui permet de renvoyer une valeur à la place de `null` et ainsi sortir du monde dangereux des types nullables.
 
 ---
 
-# Wow more such very goodies
+# Infix functions
 
-#### Default arguments
+```kotlin
+infix fun Int.inc(n: Int) = this + n
+
+println(10 inc 2)
+```
+
+---
+
+# Default arguments
 
 ```kotlin
 @JvmOverloads
-fun add(a: Int, b: Int = 1) = a + b
+*fun add(a: Int, b: Int = 1) = a + b
+
 add(1, 2) // 3
 add(1)    // 2
 ```
 
-#### Named arguments
+# Named arguments
 
 ```kotlin
 println(add(b = 2, a = 1))
 ```
 
-#### Interoperability
+???
+
+On peut définir des valeurs par défaut pour les arguments des fonctions (clin d'oeil aux développeurs JS).
+Cela évite les méthodes surchargées (clin d'oeil aux développeurs Java).
+On peut appeler une fonction en changeant l'ordre des paramètres si on les nommes, cela est surtout intéressant combiné avec le point précédent pour mettre en place des builders (enfin plutôt pour éviter d'avoir besoin de mettre en place des builders 😉)
+
+---
+
+# Interoperability
 
 ```java
 public class Interop {
@@ -447,13 +480,7 @@ public class Interop {
 
 ???
 
-Enfin pour finir beaucoup de sucre et un peu d'interopérabilité :
-
-  - on peut définir des valeurs par défaut pour les arguments des fonctions (clin d'oeil aux développeurs JS).
-    Cela évite les méthodes surchargées (clin d'oeil aux développeurs Java)
-  - on peut appeler une fonction en changeant l'ordre des paramètres si on les nommes, cela est surtout intéressant combiné avec le point précédent.
-
-Concernant l'interoperabilité on peut voir un exemple, notre classe sera nommée &lt;ClasseKT, il est possible de changer ce comportement en utilisant l'annotation `@JvmName("name")` ou @file:JvmName("name").
+Enfin pour finir concernant l'interoperabilité on peut voir un exemple, notre classe sera nommée &lt;ClasseKT, il est possible de changer ce comportement en utilisant l'annotation `@JvmName("name")` ou @file:JvmName("name").
 On voit aussi que l'on peut demander au compilateur de générer les méthodes surchargées si notre fonction fournit des valeurs par défaut pour certains arguments.
 
 ---
@@ -498,7 +525,8 @@ Kotlin, jetez-vous !
     </script>
     <script>
       var slideshow = remark.create({
-        highlightStyle: "monokai"
+        highlightStyle: "idea",
+        highlightLines: true
       });
     </script>
   </body>
